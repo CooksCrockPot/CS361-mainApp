@@ -1,0 +1,12 @@
+
+.map-wrapper {
+  width: 85%;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+
+main {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+}
