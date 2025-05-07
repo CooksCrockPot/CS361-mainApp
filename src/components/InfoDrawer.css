@@ -1,53 +1,90 @@
 .info-drawer {
-    position: fixed;
-    bottom: 50px;
-    left: 0;
-    width: 100%;
+    position: absolute;
+    bottom: 10px; /* Stays above Footer */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 800px;
     background-color: #1a1a1a;
     color: white;
-    z-index: 999;
     overflow: hidden;
     height: 50px;
     transition: height 0.3s ease;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Normal flex (tab first, content grows upward) */
     align-items: center;
-}
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
 
-.info-drawer.open {
+  .info-drawer.open {
     height: 300px;
-}
+  }
 
-.drawer-tab {
-    background-color:  #333;
-    padding: 0.75rem;
-    text-align: center;
+  .drawer-tab {
+    background-color: #333;
+    padding: 1rem;
     font-size: 1.2rem;
     cursor: pointer;
-    user-select: none;
-}
+    text-align: center;
+    width: 100%;
+  }
 
-.drawer-content {
+  .drawer-inner {
     padding: 1rem;
     overflow-y: auto;
     flex: 1;
     width: 90%;
     max-width: 800px;
     text-align: center;
-}
+  }
 
-.drawer-content h3,
-.drawer-content h4 {
-    margin: 0.5rem 0;
-}
+  /* Other drawer elements stay the same */
+  .location-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
-.drawer-content ul {
-    list-style: none;
-    padding: 0;
-    margin: 0.5rem 0;
-}
+  .bookmark-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
 
-.drawer-content li {
-    padding: 0.25rem 0;
-    font-size: 0.95rem;
-}
+  .confirm-popup {
+    background-color: white;
+    color: black;
+    padding: 1rem;
+    border: 2px solid #333;
+    border-radius: 8px;
+    position: absolute;
+    bottom: 320px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    text-align: center;
+    width: 250px;
+  }
+
+  .confirm-button {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .confirm-button.yes {
+    background-color: gold;
+    color: black;
+  }
+
+  .confirm-button.no {
+    background-color: grey;
+    color: white;
+  }
+
+
