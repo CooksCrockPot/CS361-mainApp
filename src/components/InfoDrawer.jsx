@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { FaBookmark } from 'react-icons/fa';
 import './InfoDrawer.css';
 
-function InfoDrawer({ locationName, wildfireData, floodData, earthquakeData, airQualityData, filters }) {
+function InfoDrawer({ locationName, wildfireData, filters }) {
     const [isOpen, setIsOpen] = useState(false);
     const drawerRef = useRef(null);
 
@@ -28,10 +28,10 @@ function InfoDrawer({ locationName, wildfireData, floodData, earthquakeData, air
 
     const handleBookmarkClick = () => {
         if (!isBookmarked) {
-            // Only ask confirmation if not bookmarked yet
+
             setShowConfirm(true);
         } else {
-            // Already bookmarked: remove directly
+
             setIsBookmarked(false);
         }
     };
@@ -47,18 +47,17 @@ function InfoDrawer({ locationName, wildfireData, floodData, earthquakeData, air
 
     return (
         <div ref={drawerRef} className={`info-drawer ${isOpen ? 'open' : ''}`}>
-            {/* Always Visible Tab */}
+
             <div className="drawer-tab" onClick={toggleDrawer}>
                 {isOpen ? 'Close Info' : 'Open Info'}
             </div>
 
-            {/* Drawer Inner Content */}
+
             {isOpen && (
                 <div className="drawer-inner">
                     <div className="location-header">
                         <h3>{locationName}</h3>
 
-                        {/* Bookmark Button */}
                         <button
                             className="bookmark-button"
                             onClick={handleBookmarkClick}
@@ -67,7 +66,6 @@ function InfoDrawer({ locationName, wildfireData, floodData, earthquakeData, air
                         </button>
                     </div>
 
-                    {/* Confirmation Popup */}
                     {showConfirm && (
                         <div className="confirm-popup">
                             <p>Do you want to bookmark this location?</p>
@@ -86,7 +84,6 @@ function InfoDrawer({ locationName, wildfireData, floodData, earthquakeData, air
                         </div>
                     )}
 
-                    {/* Wildfires Section */}
                     {filters.wildfires && wildfireData.length > 0 && (
                         <div>
                             <h4>Wildfires ({wildfireData.length})</h4>

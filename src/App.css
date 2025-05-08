@@ -3,7 +3,7 @@ main {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  position: relative; /* Important for positioning InfoDrawer inside main */
+  position: relative;
 }
 
 .map-wrapper {

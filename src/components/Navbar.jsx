@@ -9,13 +9,13 @@ function Navbar({ onSearch }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (searchInput.trim() && typeof onSearch === 'function') { // FIXED typo!
+    if (searchInput.trim() && typeof onSearch === 'function') {
       onSearch(searchInput);
       setSearchInput('');
     }
   };
 
-  const showSearchBar = location.pathname === '/map'; // ✅ Only show on /map
+  const showSearchBar = location.pathname === '/map';
 
   return (
     <nav className="navbar">

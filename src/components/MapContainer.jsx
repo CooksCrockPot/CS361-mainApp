@@ -22,7 +22,9 @@ const center = {
             <GoogleMap mapContainerStyle={ containerStyle } center={ center } zoom={ 8 }>
                 <WildfireMarkers filters={filters} center={center} wildfires={wildfireData} />
             </GoogleMap>
+            <div>"Be patient, this may take a few moments to display data."</div>
         </div>
+
     ) : (
         <div>Loading Map...</div>
     );
