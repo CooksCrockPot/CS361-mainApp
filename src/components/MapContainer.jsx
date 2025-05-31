@@ -20,7 +20,7 @@ const center = {
     return isLoaded ? (
         <div className="map-wrapper">
             <GoogleMap mapContainerStyle={ containerStyle } center={ center } zoom={ 8 }>
-                <WildfireMarkers filters={filters} center={center} wildfires={wildfireData} />
+                <WildfireMarkers wildfireData={wildfireData} filters={filters} />
             </GoogleMap>
             <div>"Be patient, this may take a few moments to display data."</div>
         </div>

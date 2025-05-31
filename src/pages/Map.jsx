@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import FilterDrawer from '../components/FilterDrawer';
 import InfoDrawer from '../components/InfoDrawer';
 import MapContainer from '../components/MapContainer';
+import { getWildfireMarkers } from '../api/wildfireAPI';
 
 function Map({ center, searchedCity }) {
   const [filters, setFilters] = useState({
@@ -15,27 +16,12 @@ function Map({ center, searchedCity }) {
   const [wildfires, setWildfires] = useState([]);
 
   useEffect(() => {
-    const fetchWildfires = async () => {
-      try {
-        const res = await fetch(
-          'https://eonet.gsfc.nasa.gov/api/v3/events?category=wildfires'
-        );
-        const data = await res.json();
-        const events = data.events.filter((e) => e.geometry.length > 0);
+    async function loadWildfires() {
+      const markers = await getWildfireMarkers();
+      setWildfires(markers);
+    }
 
-        const mappedFires = events.map((event) => ({
-          title: event.title,
-          location: event.sources[0]?.url || 'Unknown',
-          startDate: event.geometry[0]?.date || 'Unknown',
-          lat: event.geometry[0]?.coordinates[1],
-          lng: event.geometry[0]?.coordinates[0],
-        }));
-        setWildfires(mappedFires);
-      } catch (error) {
-        console.error('Failed to fetch wildfire data', error);
-      }
-    };
-    fetchWildfires();
+    loadWildfires();
   }, []);
 
   function getDistanceFromLatLonInMiles(lat1, lon1, lat2, lon2) {
@@ -63,7 +49,10 @@ function Map({ center, searchedCity }) {
   return (
     <>
       <FilterDrawer filters={filters} setFilters={setFilters} />
-      <MapContainer center={center} filters={filters} wildfireData={filteredWildfires} />
+      <MapContainer
+      center={center}
+      filters={filters}
+      wildfireData={filteredWildfires} />
       <InfoDrawer
         locationName={searchedCity}
         wildfireData={filteredWildfires}
