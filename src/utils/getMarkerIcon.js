@@ -1,6 +1,6 @@
 
 const ICONS = {
-    earthquakes: '/icons/triangle-alert.png',
+    earthquake: '/icons/triangle-alert.png',
     wildfire: '/icons/flame.png',
     flood: '/icons/waves.png',
     airQuality: '/icons/wind.png',
@@ -10,7 +10,7 @@ const ICONS = {
 
 function getMarkerIcon(type) {
     return {
-        url: `/icons/${type}.png`,
+        url: ICONS[type] || 'icons/default.png',
         scaledSize: new window.google.maps.Size(30, 30),
     }
 }
