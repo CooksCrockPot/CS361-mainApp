@@ -4,7 +4,7 @@ let floodCache = null;
 let lastFetched = 0;
 const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
 
-export async function getFloodMarkers() {
+export async function getFloodMarkers(lat, lon) {
     const now = Date.now();
     const cacheValid = floodCache && (now - lastFetched < CACHE_DURATION_MS);
 
@@ -13,9 +13,14 @@ export async function getFloodMarkers() {
     }
 
     try {
-        const url = `${NOAA_URL}?point=${lat},${lon}&eent=Flood`;
+        const url = `${NOAA_URL}?point=${lat},${lon}&event=Flood`;
         const res = await fetch(url)
         const data = await res.json();
+
+        if(!data || !Array.isArray(data.features)) {
+            console.error("Unexpected flood data:", data);
+            return [];
+        }
 
         const markers = data.features
             .filter((f) => f.geometry?.coordinates)
@@ -36,7 +41,7 @@ export async function getFloodMarkers() {
 
         return markers;
     } catch (error) {
-        console.error("Failed to fetch wildfire data:", error);
+        console.error("Failed to fetch flood data:", error);
         return [];
     }
 }

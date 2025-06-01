@@ -38,7 +38,7 @@ function Map({ center, searchedCity }) {
     }
 
     async function loadFloods() {
-      const markers = await getFloodMarkers();
+      const markers = await getFloodMarkers(center.lat, center.lng);
       setFloods(markers);
     }
 
