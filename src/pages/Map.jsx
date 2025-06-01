@@ -3,6 +3,7 @@ import FilterDrawer from '../components/FilterDrawer';
 import InfoDrawer from '../components/InfoDrawer';
 import MapContainer from '../components/MapContainer';
 import { getWildfireMarkers } from '../api/wildfireAPI';
+import { getEarthquakeMarkers } from '../api/earthquakeAPI';
 
 function Map({ center, searchedCity }) {
   const [filters, setFilters] = useState({
@@ -14,6 +15,7 @@ function Map({ center, searchedCity }) {
   });
 
   const [wildfires, setWildfires] = useState([]);
+  const [earthquakes, setEarthquakes] = useState([]);
 
   useEffect(() => {
     async function loadWildfires() {
@@ -21,7 +23,13 @@ function Map({ center, searchedCity }) {
       setWildfires(markers);
     }
 
+    async function loadEarthquakes() {
+      const markers = await getEarthquakeMarkers();
+      setEarthquakes(markers);
+    }
+
     loadWildfires();
+    loadEarthquakes();
   }, []);
 
   function getDistanceFromLatLonInMiles(lat1, lon1, lat2, lon2) {
@@ -46,18 +54,25 @@ function Map({ center, searchedCity }) {
     return distance <= filters.distance;
   });
 
+  const filteredEarthquakes = earthquakes.filter((quake) => {
+    const distance = getDistanceFromLatLonInMiles(center.lat, center.lng, quake.lat, quake.lng);
+    return distance <= filters.distance;
+  });
   return (
     <>
       <FilterDrawer filters={filters} setFilters={setFilters} />
       <MapContainer
       center={center}
       filters={filters}
-      wildfireData={filteredWildfires} />
+      wildfireData={filteredWildfires}
+      earthquakeData={filteredEarthquakes}
+      />
+
       <InfoDrawer
         locationName={searchedCity}
         wildfireData={filteredWildfires}
+        earthquakeData={filteredEarthquakes}
         floodData={[]}
-        earthquakeData={[]}
         airQualityData={[]}
         filters={filters}
       />

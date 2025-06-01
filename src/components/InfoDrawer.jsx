@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { FaBookmark } from 'react-icons/fa';
 import './InfoDrawer.css';
 
-function InfoDrawer({ locationName, wildfireData, filters }) {
+function InfoDrawer({ locationName, wildfireData, earthquakeData, filters }) {
     const [isOpen, setIsOpen] = useState(false);
     const drawerRef = useRef(null);
 
@@ -91,6 +91,23 @@ function InfoDrawer({ locationName, wildfireData, filters }) {
                                 {wildfireData.map((fire, idx) => (
                                     <li key={idx}>
                                         {fire.title} - {fire.location} - {fire.startDate}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                    {filters.earthquakes && earthquakeData.length > 0 && (
+                        <div>
+                            <h3>Recent Earthquakes</h3>
+                            <ul>
+                                {earthquakeData.map((quake) => (
+                                    <li key={quake.id}>
+                                        <strong>{quake.title}</strong><br />
+                                        Magnitude: {quake.magnitude}<br />
+                                        Time: {new Date(quake.time).toLocaleString()}<br />
+                                        <a href={quake.url} target="_blank" rel="noopener noreferrer">
+                                            More Info
+                                        </a>
                                     </li>
                                 ))}
                             </ul>
