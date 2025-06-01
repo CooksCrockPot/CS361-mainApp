@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { FaBookmark } from 'react-icons/fa';
 import './InfoDrawer.css';
 
-function InfoDrawer({ locationName, wildfireData, earthquakeData, airQualityData, filters }) {
+function InfoDrawer({ locationName, wildfireData, earthquakeData, airQualityData, floodData, filters }) {
     const [isOpen, setIsOpen] = useState(false);
     const drawerRef = useRef(null);
 
@@ -142,6 +142,24 @@ function InfoDrawer({ locationName, wildfireData, earthquakeData, airQualityData
                             </ul>
                         </div>
                     )}
+
+                    {filters.floods && floodData.length > 0 && (
+                        <div>
+                            <h3>Flood Events</h3>
+                            <ul>
+                                {floodData.map((flood) => (
+                                    <li key={flood.id}>
+                                        <strong>{flood.title}</strong><br />
+                                        Date: {new Date(flood.time).toLocaleString()}<br />
+                                        <a href={flood.link} target="_blank" rel="noopener noreferrer">
+                                            More Info
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
                 </div>
             )}
         </div>

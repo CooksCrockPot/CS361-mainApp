@@ -5,6 +5,7 @@ import MapContainer from '../components/MapContainer';
 import { getWildfireMarkers } from '../api/wildfireAPI';
 import { getEarthquakeMarkers } from '../api/earthquakeAPI';
 import { getAirQuality } from '../api/airQualityAPI';
+import { getFloodMarkers } from '../api/floodAPI';
 
 function Map({ center, searchedCity }) {
   const [filters, setFilters] = useState({
@@ -18,6 +19,7 @@ function Map({ center, searchedCity }) {
   const [wildfires, setWildfires] = useState([]);
   const [earthquakes, setEarthquakes] = useState([]);
   const [airQuality, setAirQuality] = useState(null);
+  const [floods, setFloods] = useState([]);
 
   useEffect(() => {
     async function loadWildfires() {
@@ -35,9 +37,16 @@ function Map({ center, searchedCity }) {
       setAirQuality(data);
     }
 
+    async function loadFloods() {
+      const markers = await getFloodMarkers();
+      setFloods(markers);
+    }
+
     loadAirQuality();
     loadWildfires();
     loadEarthquakes();
+    loadFloods();
+
   }, [center]);
 
   function getDistanceFromLatLonInMiles(lat1, lon1, lat2, lon2) {
@@ -66,6 +75,12 @@ function Map({ center, searchedCity }) {
     const distance = getDistanceFromLatLonInMiles(center.lat, center.lng, quake.lat, quake.lng);
     return distance <= filters.distance;
   });
+
+  const filteredFloods = floods.filter((flood) => {
+    const distance = getDistanceFromLatLonInMiles(center.lat, center.lng, flood.lat, flood.lng);
+    return distance <= filters.distance;
+  });
+
   return (
     <>
       <FilterDrawer filters={filters} setFilters={setFilters} />
@@ -80,7 +95,7 @@ function Map({ center, searchedCity }) {
         locationName={searchedCity}
         wildfireData={filteredWildfires}
         earthquakeData={filteredEarthquakes}
-        floodData={[]}
+        floodData={filteredFloods}
         airQualityData={airQuality}
         filters={filters}
       />
