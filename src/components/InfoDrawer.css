@@ -86,4 +86,9 @@
     color: white;
   }
 
+  .smoke-warning {
+    color: #b22222;
+    font-weight: bold;
+    margin-top: 0.5em;
+  }
 

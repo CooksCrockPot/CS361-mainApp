@@ -4,6 +4,7 @@ import InfoDrawer from '../components/InfoDrawer';
 import MapContainer from '../components/MapContainer';
 import { getWildfireMarkers } from '../api/wildfireAPI';
 import { getEarthquakeMarkers } from '../api/earthquakeAPI';
+import { getAirQuality } from '../api/airQualityAPI';
 
 function Map({ center, searchedCity }) {
   const [filters, setFilters] = useState({
@@ -16,6 +17,7 @@ function Map({ center, searchedCity }) {
 
   const [wildfires, setWildfires] = useState([]);
   const [earthquakes, setEarthquakes] = useState([]);
+  const [airQuality, setAirQuality] = useState(null);
 
   useEffect(() => {
     async function loadWildfires() {
@@ -28,9 +30,15 @@ function Map({ center, searchedCity }) {
       setEarthquakes(markers);
     }
 
+    async function loadAirQuality() {
+      const data = await getAirQuality(center.lat, center.lng);
+      setAirQuality(data);
+    }
+
+    loadAirQuality();
     loadWildfires();
     loadEarthquakes();
-  }, []);
+  }, [center]);
 
   function getDistanceFromLatLonInMiles(lat1, lon1, lat2, lon2) {
     const R = 3958.8;
@@ -73,7 +81,7 @@ function Map({ center, searchedCity }) {
         wildfireData={filteredWildfires}
         earthquakeData={filteredEarthquakes}
         floodData={[]}
-        airQualityData={[]}
+        airQualityData={airQuality}
         filters={filters}
       />
     </>

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { FaBookmark } from 'react-icons/fa';
 import './InfoDrawer.css';
 
-function InfoDrawer({ locationName, wildfireData, earthquakeData, filters }) {
+function InfoDrawer({ locationName, wildfireData, earthquakeData, airQualityData, filters }) {
     const [isOpen, setIsOpen] = useState(false);
     const drawerRef = useRef(null);
 
@@ -35,6 +35,17 @@ function InfoDrawer({ locationName, wildfireData, earthquakeData, filters }) {
             setIsBookmarked(false);
         }
     };
+
+    function aqiLabel(aqi) {
+        switch (aqi) {
+            case 1: return "Good";
+            case 2: return "Fair";
+            case 3: return "Moderate";
+            case 4: return "Poor";
+            case 5: return 'Very Poor';
+            default: return "Unknown";
+        }
+    }
 
     const confirmBookmark = () => {
         setIsBookmarked(true);
@@ -84,6 +95,24 @@ function InfoDrawer({ locationName, wildfireData, earthquakeData, filters }) {
                         </div>
                     )}
 
+                    {filters.airQuality && airQualityData && (
+                        <div>
+                            <h4>Air Quality</h4>
+                            <p><strong>AQI:</strong> {airQualityData.aqi} ({aqiLabel(airQualityData.aqi)})</p>
+                            <p><strong>Measured:</strong> {new Date(airQualityData.time).toLocaleDateString()}</p>
+                            <ul>
+                                {Object.entries(airQualityData.components).map(([key, value]) => (
+                                    <li key={key}>
+                                        {key.toUpperCase()}: {value} ug/m^3
+                                    </li>
+                                ))}
+                            </ul>
+
+                            {airQualityData.components.pm2_5 > 35 && (
+                                <p className="smoke-warning">Smoke levels are elevated (PM2.5 over 35 ug/m^3)</p>
+                            )}
+                        </div>
+                    )}
                     {filters.wildfires && wildfireData.length > 0 && (
                         <div>
                             <h4>Wildfires ({wildfireData.length})</h4>
